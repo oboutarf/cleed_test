@@ -24,15 +24,15 @@ function uploadDirectory(req, res, next) {
     next()
 }
 
-    router.get('/', (req, res) => {
-        try {
-            const imagesDir = path.join(__dirname, 'uploads')
-            fs.readdir(imagesDir, (err, files) => {
-                res.render('gallery', { images: files })
-            })
-        }
-        catch (err) { console.log("app-back: error: ", err) }
-    })
+router.get('/', (req, res) => {
+    try {
+        const imagesDir = path.join(__dirname, 'uploads')
+        fs.readdir(imagesDir, (err, files) => {
+            res.render('gallery', { images: files })
+        })
+    }
+    catch (err) { console.log("app-back: error: ", err) }
+})
 
 router.post('/api/upload', uploadDirectory, upload.single('image'), (req, res) => {
     try {

@@ -1,7 +1,6 @@
 .PHONY: app front back
 
 app:
-	npm init -y
 	$(MAKE) -j2 back front
 
 front:

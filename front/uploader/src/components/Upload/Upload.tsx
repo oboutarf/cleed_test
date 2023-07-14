@@ -1,34 +1,67 @@
  // eslint-disable-next-line
 import React, {ChangeEvent, useState } from 'react'
 import axios from 'axios'
+import './Upload.scss'
 
 const   Upload = () =>  {
 
-    const [upload, setUpload] = useState<File>()
-
+    const [upload, setUpload] = useState<File | null>(null)
+    const [rotator, setRotator] = useState<number>(0)
+    const [uploadSelectedFileName, setUploadSelectedFileName] = useState<string | null>(null)
 
     function    changeInputState(e: React.ChangeEvent<HTMLInputElement>)  {
-        if (e.target.files)
+        if (e.target.files) {
             setUpload(e.target.files[0])
+            setUploadSelectedFileName(e.target.files[0].name)
+        }
     }
-    
-    function    sendUploadedImage() {
+
+    function    clearSelectedFile() {
+        setUploadSelectedFileName(null)
+        setUpload(null)
+    }
+
+    let angleRotate: number = 0
+    async function    rotateUploadWaiting(e: React.MouseEvent<HTMLImageElement>)   {
         if (upload) {
+            setUploadSelectedFileName(upload.name)
             const imageData = new FormData()
             imageData.append('image', upload)
-            const res = axios({
+            const res = await axios({
                 url: "http://localhost:8080/api/upload",
                 method: "POST",
                 data: imageData
             })
+            const imageElement = e.target as HTMLImageElement
+            imageElement.style.transition = 'transform 0.5s ease'
+            angleRotate += 360
+            const rotate = `rotate(${angleRotate}deg)`
+            imageElement.style.transform = rotate
         }
     }
 
-
     return (
         <div className="upload-container">
-            <input className="uploader-input" accept="image/*" type="file" onChange={changeInputState} />
-            <button className="change-avatar-button" onClick={sendUploadedImage} >Submit</button>
+            <div className="user-interact-contain">
+                { !uploadSelectedFileName ?
+                    <div>
+                        <input className="uploader-input" accept="image/*" type="file" onChange={changeInputState} id="file-input" />
+                        <label className="container-upload-button" htmlFor="file-input">
+                            <h2>Choose image</h2>
+                            <img className="upload-image-img" src="https://www.nicepng.com/png/full/108-1084516_upload-to-cloud-blue-button-upload-cloud-icon.png" alt="upload-img" />
+                        </label>
+                    </div>
+                :
+                    <div className="file-selected-contain">
+                        <h3>{ uploadSelectedFileName }</h3>
+                        <img onClick={clearSelectedFile} className="choose-other-icon" src="https://cdn-icons-png.flaticon.com/512/2546/2546705.png" alt="img" />
+                    </div>
+                }
+                <div className="change-avatar-button">
+                    <h2>Upload</h2>
+                    <img onClick={rotateUploadWaiting} className="send-button-img" src="https://icon-library.com/images/newsletter-icon/newsletter-icon-10.jpg" alt="" />
+                </div>
+            </div>
         </div>
     )
 }

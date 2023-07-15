@@ -6,7 +6,6 @@ import './Upload.scss'
 const   Upload = () =>  {
 
     const [upload, setUpload] = useState<File | null>(null)
-    const [rotator, setRotator] = useState<number>(0)
     const [uploadSelectedFileName, setUploadSelectedFileName] = useState<string | null>(null)
 
     function    changeInputState(e: React.ChangeEvent<HTMLInputElement>)  {
@@ -27,7 +26,7 @@ const   Upload = () =>  {
             setUploadSelectedFileName(upload.name)
             const imageData = new FormData()
             imageData.append('image', upload)
-            const res = await axios({
+            await axios({
                 url: "http://localhost:8080/api/upload",
                 method: "POST",
                 data: imageData

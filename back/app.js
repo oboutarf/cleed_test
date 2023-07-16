@@ -34,14 +34,11 @@ router.get('/', (req, res) => {
 
 router.get('/api/search', (req, res) => {
     const searched = req.query.query
-
     const images = path.join(__dirname, 'uploads')
     fs.readdir(images, (err, files) => {
         const searchedOutput = files.filter((fileName) => { return fileName.toLowerCase().includes(searched.toLowerCase()) })
         res.json({ images: searchedOutput })
     })
-    // res.writeHead(200, { 'Content-Type': 'application/json' })
-    // res.end(JSON.stringify({ message: 'app-back: success: search returning success' }))
 })
 
 router.post('/api/upload', uploadDirectory, upload.single('image'), (req, res) => {

@@ -1,5 +1,6 @@
 const   express = require('express')
 const   multer = require('multer')
+const   sharp = require('sharp')
 const   cors = require('cors')
 const   path = require('path')
 const   fs = require('fs')
@@ -18,6 +19,12 @@ const store = multer.diskStorage({
     filename: (req, file, cb) => { cb(null, file.originalname) }
 })
 const upload = multer({ storage: store })
+
+async function decompress(inpt, name)   {
+    const outp = 'uploads/' + name + '@'
+    await sharp(inpt).toFile(outp).catch((err) => console.log("app-back: error: ", err))
+    fs.renameSync(outp, inpt)
+}
 
 function uploadDirectory(req, res, next) {
     if (!fs.existsSync('./uploads')) { fs.mkdirSync('./uploads') }
@@ -43,8 +50,11 @@ router.get('/api/search', (req, res) => {
 
 router.post('/api/upload', uploadDirectory, upload.single('image'), (req, res) => {
     try {
-        res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify({ message: 'app-back: success: file uploaded successfully' }))
+        if (req.file)   {
+            decompress(req.file.path, req.file.filename)
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ message: 'app-back: success: file uploaded successfully' }))
+        }
     }
     catch (err) {
         res.writeHead(404, { 'Content-type': 'application/json' })

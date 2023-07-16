@@ -9,6 +9,9 @@ const   Upload = () =>  {
     const [successUpload, setSuccessUpload] = useState<string | null>(null)
     const [uploadSelectedFileName, setUploadSelectedFileName] = useState<string | null>(null)
 
+    function    refreshWebPage()    {
+        window.location.href = "/"
+    }
     function    waitRotateBeforeSuccess()   {
         setSuccessUpload('success')
     }
@@ -49,8 +52,8 @@ const   Upload = () =>  {
     return (
         <div className="upload-container">
             <div className="container-main-content">
-                <div className="user-interact-title">
-                    <h1>Your Web Uploader</h1>
+                <div className="user-interact-title" onClick={refreshWebPage}>
+                    <h1>Web Uploader&nbsp;&#128187;</h1>
                     <p>powered by oscoding</p>
                 </div>
                 <div className="user-interact-contain">

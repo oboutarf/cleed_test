@@ -99,12 +99,11 @@
 			border: 2.2px solid #f1f1f1;	
 			background-color: white;
 			padding: 5vh;
-			height: auto;	
 			width: calc(25% - 10px);
-			max-width: 200px;
-			max-height: 200px;
-			min-width: 100px;
-			min-height: 100px;
+			max-width: 150px;
+			max-height: 150px;
+			min-width: 50px;
+			min-height: 50px;
 			margin-top: 1vh;
 			margin-bottom: 2vh;
 		}
@@ -144,14 +143,13 @@
 		<div class="image-container">
 			<% images.forEach(image => { %>
 				<img src="/uploads/<%= image %>" alt="<%= image %>">
-			<% }); %>	
+			<% }); %>
 		</div>
 	</div>
 		<script>
 			function searchImages() {
 				const input = document.querySelector(".input-searchbar")
-				const query = input.value.trim()
-				fetch(`/api/search?query=${query}`)
+				fetch(`/api/search?query=${input.value.trim()}`)
 				.then((res) => res.json())
 				.then((data) => {
 					const newImages = data.images

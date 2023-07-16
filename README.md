@@ -56,3 +56,39 @@ In order to manage the upload directory during the upload process, the back uses
 At the back's URL, at the root ```http://localhost:8080/``` you can see all uploaded images, and a searchbar is enabled so </br>
 that you can see if your file was uploaded successfully or search for an image in particular 🔎 </br>
 This render is possible tanks to the back using a Node JS Embedded Template: **ejs**.
+
+## 🚧&nbsp;&nbsp;Structure ##
+```cleed_test
+├── Makefile
+├── README.md
+├── back
+│   ├── app.js
+│   ├── package-lock.json
+│   ├── package.json
+│   └── views
+│       └── gallery.ejs
+└── front
+    └── uploader
+        ├── package-lock.json
+        ├── package.json
+        ├── public
+        │   ├── favicon.ico
+        │   ├── index.html
+        │   ├── manifest.json
+        │   └── robots.txt
+        ├── src
+        │   ├── App.scss
+        │   ├── App.tsx
+        │   ├── assets
+        │   │   └── background-app.gif
+        │   ├── components
+        │   │   └── Upload
+        │   │       ├── Upload.scss
+        │   │       └── Upload.tsx
+        │   ├── index.css
+        │   ├── index.tsx
+        │   └── reportWebVitals.js
+        └── tsconfig.json
+
+10 directories, 21 files
+```

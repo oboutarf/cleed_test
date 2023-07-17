@@ -34,7 +34,11 @@ function uploadDirectory(req, res, next) {
 router.get('/', (req, res) => {
     try {
         const images = path.join(__dirname, 'uploads')
-        fs.readdir(images, (err, files) => { res.render('gallery', { images: files }) })
+        fs.readdir(images, (err, files) => {
+            if (files)
+                return res.render('gallery', { images: files })
+            return res.render('gallery', { images: [] } )    
+        })
     }
     catch (err) { console.log("app-back: error: ", err) }
 })
@@ -43,7 +47,11 @@ router.get('/api/search', (req, res) => {
     const searched = req.query.query
     const images = path.join(__dirname, 'uploads')
     fs.readdir(images, (err, files) => {
-        const searchedOutput = files.filter((fileName) => { return fileName.toLowerCase().includes(searched.toLowerCase()) })
+        if (!files)
+            return res.json({ images: [] })
+        const searchedOutput = files.filter((fileName) => { 
+            return fileName.toLowerCase().includes(searched.toLowerCase())
+        })
         res.json({ images: searchedOutput })
     })
 })
